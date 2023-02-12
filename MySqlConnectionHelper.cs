@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 
 namespace dotnet_test_app
 {
@@ -6,7 +7,17 @@ namespace dotnet_test_app
     {
         public static MySqlConnection GetConnection()
         {
-            string connectionString = "Server=173.254.39.157;Database=hzmnrnmy_test-mysql;Uid=hzmnrnmy_usrtest;Pwd=Mercerst.13;";
+            var configuration = new ConfigurationBuilder()
+                 .AddJsonFile("appsettings.json")
+                 .AddEnvironmentVariables()
+                 .Build();
+
+            var server = configuration["SERVER"];
+            var database = configuration["DATABASE"];
+            var uid = configuration["USERNAME"];
+            var pwd = configuration["PASSWORD"];
+
+            string connectionString = $"Server={server};Database={database};Uid={uid};Pwd={pwd};";
             MySqlConnection connection = new MySqlConnection(connectionString);
             connection.Open();
             return connection;
